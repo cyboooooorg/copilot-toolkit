@@ -87,7 +87,47 @@ else
   warn "Run this inside Copilot CLI: /skills add $SKILLS_DIR"
 fi
 
-# ── 6. Install LSP servers (optional) ────────────────────────────────────────
+# ── 6. Ensure npx is available ───────────────────────────────────────────────
+header "Checking npx / Node.js..."
+if command -v npx &>/dev/null; then
+  log "npx already available ($(node --version 2>/dev/null || echo 'unknown version'))"
+else
+  warn "npx not found. It is required to manage skills via 'npx skills'."
+  read -r -p "  Install Node.js via nvm now? [y/N] " answer
+  if [[ "${answer,,}" =~ ^y ]]; then
+    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    # shellcheck source=/dev/null
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+    nvm install --lts
+    log "Node.js installed via nvm"
+  else
+    warn "Skipping Node.js installation — 'npx skills' commands will not work"
+  fi
+fi
+
+# ── 7. Symlink .agents/skills into ~/.agents/skills ───────────────────────────
+header "Symlinking agent skills..."
+AGENTS_SRC="$TOOLKIT_DIR/.agents/skills"
+AGENTS_DST="$HOME/.agents/skills"
+
+if [ -d "$AGENTS_SRC" ]; then
+  mkdir -p "$AGENTS_DST"
+  for skill_dir in "$AGENTS_SRC"/*/; do
+    skill_name="$(basename "$skill_dir")"
+    dst_link="$AGENTS_DST/$skill_name"
+    if [ -L "$dst_link" ] && [ "$(readlink "$dst_link")" = "${skill_dir%/}" ]; then
+      log "Agent skill symlink already up to date: $skill_name"
+    else
+      ln -sf "${skill_dir%/}" "$dst_link"
+      log "Agent skill symlinked: $skill_name"
+    fi
+  done
+else
+  warn "No .agents/skills directory found — skipping agent skill symlinks"
+fi
+
+# ── 8. Install LSP servers (optional) ────────────────────────────────────────
 header "LSP servers..."
 install_lsp_server() {
   local name="$1" cmd="$2"
@@ -105,6 +145,7 @@ install_lsp_server "Rust Analyzer" "rust-analyzer"               "rustup compone
 # ── Done ──────────────────────────────────────────────────────────────────────
 echo -e "\n${BOLD}${GREEN}✨ Copilot toolkit installed!${NC}\n"
 echo -e "  Skills dir : $SKILLS_DIR"
+echo -e "  Agent skills: $AGENTS_DST (symlinked from $AGENTS_SRC)"
 echo -e "  Instructions: $INSTRUCTIONS_DST → $INSTRUCTIONS_SRC"
 echo -e "  LSP config  : $LSP_DST → $LSP_SRC"
 echo -e ""

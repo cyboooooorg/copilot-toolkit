@@ -4,6 +4,8 @@ set -euo pipefail
 TOOLKIT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COPILOT_DIR="$HOME/.copilot"
 SKILLS_DIR="$TOOLKIT_DIR/skills"
+AGENTS_SRC="$TOOLKIT_DIR/.agents/skills"
+AGENTS_DST="$HOME/.agents/skills"
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BOLD='\033[1m'
@@ -30,6 +32,18 @@ for link in \
     warn "Not a symlink (skipping): $link"
   fi
 done
+
+# Remove agent skill symlinks from ~/.agents/skills
+if [ -d "$AGENTS_SRC" ]; then
+  for skill_dir in "$AGENTS_SRC"/*/; do
+    skill_name="$(basename "$skill_dir")"
+    dst_link="$AGENTS_DST/$skill_name"
+    if [ -L "$dst_link" ] && [ "$(readlink "$dst_link")" = "${skill_dir%/}" ]; then
+      rm "$dst_link"
+      log "Removed agent skill symlink: $skill_name"
+    fi
+  done
+fi
 
 # Remove skills directory from config
 CONFIG_FILE="$COPILOT_DIR/config.json"
