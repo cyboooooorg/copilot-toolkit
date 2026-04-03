@@ -28,6 +28,7 @@ These instructions apply to all projects when using GitHub Copilot CLI.
     - `chore(deps): bump lodash to 4.17.21`
 - Always include the Co-authored-by trailer for Copilot commits:
   `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`
+- Always ask the user before creating a git commit. Never commit without explicit confirmation.
 
 ## Security
 
