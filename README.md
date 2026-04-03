@@ -7,6 +7,7 @@ Personal toolkit for GitHub Copilot CLI — use it on any machine, any project.
 | Path | Purpose |
 |------|---------|
 | `skills/` | Local custom skills (each sub-folder = one skill with a `SKILL.md`) |
+| `.agents/skills/` | Skills installed via `npx skills` (symlinked into `~/.agents/skills/`) |
 | `instructions/copilot-instructions.md` | Global Copilot instructions (applies to all projects) |
 | `lsp/lsp-config.json` | LSP server configuration |
 | `mcp/mcp-config.json` | MCP server configuration |
@@ -25,9 +26,32 @@ cd ~/Developer/copilot-toolkit
 2. Symlink `instructions/copilot-instructions.md` → `~/.copilot/copilot-instructions.md`
 3. Symlink `lsp/lsp-config.json` → `~/.copilot/lsp-config.json`
 4. Register `skills/` as a custom skill directory in your Copilot config
-5. Install any LSP servers listed in `lsp/lsp-config.json`
+5. Check for `npx` / Node.js — prompt to install via nvm if missing
+6. Symlink each skill in `.agents/skills/` → `~/.agents/skills/`
+7. Install any LSP servers listed in `lsp/lsp-config.json`
 
 ## Adding a skill
+
+There are two ways to add skills:
+
+### Option A — Discover & install from the ecosystem (recommended)
+
+Use the built-in **find-skills** skill: just ask Copilot something like:
+
+> *"Find a skill for writing changelogs"* or *"Is there a skill for PR reviews?"*
+
+Copilot will search [skills.sh](https://skills.sh/) and suggest matching skills.
+You can also search and install directly from the terminal:
+
+```bash
+npx skills find [query]               # interactive search
+npx skills add <owner/repo@skill>     # install a specific skill
+```
+
+Installed skills land in `.agents/skills/` and are automatically symlinked to
+`~/.agents/skills/` the next time you run `./install.sh`.
+
+### Option B — Write a custom skill
 
 ```bash
 mkdir skills/my-skill
