@@ -29,6 +29,7 @@ These instructions apply to all projects when using GitHub Copilot CLI.
 - Always include the Co-authored-by trailer for Copilot commits:
   `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`
 - Always ask the user before creating a git commit. Never commit without explicit confirmation.
+- This applies even in autopilot/unattended mode: stop, ask, and wait for the user's answer. Do not proceed with a commit if no answer has been received.
 
 ## Security
 
