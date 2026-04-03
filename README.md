@@ -5,10 +5,10 @@ Personal toolkit for GitHub Copilot CLI — use it on any machine, any project.
 ## What's inside
 
 | Path | Purpose |
-|------|---------|
-| `skills/` | Local custom skills (each sub-folder = one skill with a `SKILL.md`) |
-| `.agents/skills/` | Skills installed via `npx skills` (symlinked into `~/.agents/skills/`) |
-| `instructions/copilot-instructions.md` | Global Copilot instructions (applies to all projects) |
+| --- | --- |
+| `skills/` | Custom skills — one folder per skill (`SKILL.md`) |
+| `.agents/skills/` | `npx skills` packages, symlinked to `~/.agents/skills/` |
+| `instructions/copilot-instructions.md` | Global Copilot instructions |
 | `lsp/lsp-config.json` | LSP server configuration |
 | `mcp/mcp-config.json` | MCP server configuration |
 | `templates/` | Per-project starter files (drop these into your repos) |
@@ -22,8 +22,10 @@ cd ~/Developer/copilot-toolkit
 ```
 
 `install.sh` will:
+
 1. Install GitHub Copilot CLI if not already present
-2. Symlink `instructions/copilot-instructions.md` → `~/.copilot/copilot-instructions.md`
+2. Symlink `instructions/copilot-instructions.md` →
+   `~/.copilot/copilot-instructions.md`
 3. Symlink `lsp/lsp-config.json` → `~/.copilot/lsp-config.json`
 4. Register `skills/` as a custom skill directory in your Copilot config
 5. Check for `npx` / Node.js — prompt to install via nvm if missing
@@ -77,7 +79,8 @@ After adding a skill, reload with `/skills reload` inside Copilot CLI.
 
 ## Adding an MCP server
 
-Edit `mcp/mcp-config.json` and re-run `./install.sh` (or use `/mcp` inside Copilot CLI).
+Edit `mcp/mcp-config.json` and re-run `./install.sh`
+(or use `/mcp` inside Copilot CLI).
 
 ## Per-project setup
 
