@@ -31,6 +31,17 @@ These instructions apply to all projects when using GitHub Copilot CLI.
 - Always ask the user before creating a git commit. Never commit without explicit confirmation.
 - This applies even in autopilot/unattended mode: stop, ask, and wait for the user's answer. Do not proceed with a commit if no answer has been received.
 
+## Markdown
+
+- Always write Markdown that complies with **markdownlint** rules (based on the [markdownlint default ruleset](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)):
+  - Use ATX-style headings (`#`, `##`, etc.), never Setext-style
+  - Blank line required before and after headings, lists, and code blocks
+  - No trailing spaces; no multiple consecutive blank lines
+  - Fenced code blocks must specify a language
+  - Lists must use consistent markers; nested lists indented by 2 or 4 spaces
+  - No bare URLs — always use `[text](url)` link syntax
+  - Files must end with a single newline
+
 ## Security
 
 - Never commit secrets, tokens, or credentials.
