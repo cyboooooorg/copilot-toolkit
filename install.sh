@@ -94,7 +94,7 @@ if command -v npx &>/dev/null; then
 else
   warn "npx not found. It is required to manage skills via 'npx skills'."
   read -r -p "  Install Node.js via nvm now? [y/N] " answer
-  if [[ "${answer,,}" =~ ^y ]]; then
+  if [[ "$answer" =~ ^[yY] ]]; then
     curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
     # shellcheck source=/dev/null
     export NVM_DIR="$HOME/.nvm"
